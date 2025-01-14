@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "378920529180",
+    "project_id": "coordinate-app-5eda7",
+    "storage_bucket": "coordinate-app-5eda7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378920529180:android:c6307581763f751a501ed9",
+        "android_client_info": {
+          "package_name": "com.example.coordinate_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMMZq58mUUqZAZM1M_BK545w6O9TRXFWg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
