@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coordinate_app/presentation/screens/auth%20screen/signIn.dart';
+import 'package:coordinate_app/presentation/screens/base/base_screen.dart';
 import 'package:coordinate_app/presentation/screens/home/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -40,16 +41,28 @@ class _InterestScreenState extends State<InterestScreen> {
     _checkUserAuthentication();
   }
 
-  // Check if user is authenticated before allowing to proceed
-  void _checkUserAuthentication() {
+  // Check if the user is authenticated and has interests saved
+  void _checkUserAuthentication() async {
     User? user = _auth.currentUser;
 
     if (user == null) {
       // If user is not authenticated, navigate to login screen
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => SignInScreen()), // Replace with your login screen
+        MaterialPageRoute(
+            builder: (context) =>
+                SignInScreen()), // Replace with your login screen
       );
+    } else {
+      // Check if the user has saved interests
+      final doc = await _firestore.collection('users').doc(user.uid).get();
+      if (doc.exists && doc.data()?['interests'] != null) {
+        // User has interests saved, navigate to HomeScreen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => BaseScreen()),
+        );
+      }
     }
   }
 
@@ -58,7 +71,6 @@ class _InterestScreenState extends State<InterestScreen> {
     User? user = _auth.currentUser;
 
     if (user != null) {
-      // User is authenticated
       final String uid = user.uid;
 
       try {
@@ -76,7 +88,6 @@ class _InterestScreenState extends State<InterestScreen> {
         _showSnackBar('Error saving interests: $e');
       }
     } else {
-      // User is not authenticated
       _showSnackBar('Error: User is not authenticated');
     }
   }
@@ -92,7 +103,8 @@ class _InterestScreenState extends State<InterestScreen> {
 
   // Show a snackbar with a message
   void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
